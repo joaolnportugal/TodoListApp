@@ -1,0 +1,122 @@
+﻿@model ViewTodoListViewModel
+
+<div>
+    @Html.ActionLink("Back to list", "index", "todolist")
+</div>
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col @Model.ColorCssClasses">
+                <div class="fs-1">
+                    @Model.Name
+                </div>
+                <div class="fs-6 fst-italic">
+                    @Model.Description
+                </div>
+            </div>
+            <div class="col-1 d-flex align-items-center" style="width: 106px;">
+                <a class="btn btn-outline-primary" href="@Url.Action("edit", "todolist", new { id = Model.Id })">
+                    <span class="fas fa-pencil"></span>
+                </a>
+                <a class="btn btn-outline-danger" href="@Url.Action("delete", "todolist", new { id = Model.Id })">
+                    <span class="fas fa-trash-can"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <ul class="list-group list-group-flush">
+        @foreach (var task in Model.Tasks)
+        {
+            <li class="list-group-item">
+                <div class="row @(task.IsComplete ? "text-decoration-line-through" : "")">
+                    <div class="col-1 px-3 text-danger d-flex align-items-center" style="width: 44px;">
+                        @for (var i = 0; i < task.Priority; i++)
+                        {
+                            <span class="fas fa-exclamation"></span>
+                        }
+                    </div>
+                    <div class="col">
+                        @task.Description
+                    </div>
+                    <div class="col-1 d-flex align-items-center" style="width: 106px">
+                        <button class="btn btn-outline-success" type="button" data-action="toggleDone" data-task-id="@task.Id" data-todolist-id="@Model.Id">
+                            <span class="fas fa-check"></span>
+                        </button>
+                        <button class="btn btn-outline-danger" type="button" data-action="deleteTask" data-task-id="@task.Id" data-todolist-id="@Model.Id">
+                            <span class="fas fa-trash-can"></span>
+                        </button>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+    <div class="input-group mt-3">
+        <input type="text" class="form-control" placeholder="Add a task" aria-label="Add a task" aria-describedby="button-add-task">
+        <select class="priority-select" aria-label="Priority">
+            <option value="1">Low Priority</option>
+            <option value="2" selected>Normal Priority</option>
+            <option value="3">High Priority</option>
+        </select>
+        <button class="btn btn-primary" type="button" id="button-add-task" data-todolist-id="@Model.Id">Add</button>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    $(function() {
+        var deleteSelector = '[data-action="deleteTask"]';
+        var doneSelector = '[data-action="toggleDone"]';
+        var addTaskSelector = "#button-add-task";
+
+        $(deleteSelector).click(function() {
+            var that = $(this);
+            $.ajax('/api/todolist/task/delete?todolistid=' + that.data('todolist-id') + '&taskid=' + that.data('task-id'),
+            {
+                method: 'POST',
+                success: function(jqXHR, textStatus) {
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            });
+        });
+
+        $(doneSelector).click(function() {
+            var that = $(this);
+            $.ajax('/api/todolist/task/complete?todolistid=' + that.data('todolist-id') + '&taskid=' + that.data('task-id'),
+            {
+                method: 'POST',
+                success: function(jqXHR, textStatus) {
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            });
+        });
+
+        $(addTaskSelector).click(function() {
+            var that = $(this);
+            var input = that.siblings("input");
+            var select = that.siblings("select");
+            
+            if(input.val() != '')
+            {
+                $.ajax('/api/todolist/task?todolistid=' + that.data('todolist-id'),
+                {
+                    contentType: 'application/json',
+                    method: 'POST',
+                    data: JSON.stringify({ task: input.val(), priority: select.val() }),
+                    success: function(jqXHR, textStatus) {
+                        location.reload();
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        alert(textStatus);
+                    }
+                });
+            }
+        });
+    });
+</script>
+}

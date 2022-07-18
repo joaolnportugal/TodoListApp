@@ -1,0 +1,36 @@
+﻿@model EditTodoListViewModel
+
+<h3 class="mb-3">Edit Todo List</h3>
+
+<form asp-controller="todolist" asp-action="edit" asp-route-id="@Model.Id" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Background Color</label>
+        <div class="form-control">
+            @foreach (var color in Model.AvailableColors)
+            {
+                <input type="radio" class="btn-check" asp-for="SelectedColor" id="@color.Name" value="@color.Id" autocomplete="off">
+                <label class="btn @color.CssClassName" for="@color.Name">@color.Name</label>
+            }
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-outline-primary">
+        <span class="fas fa-save pe-2"></span>Save
+    </button>
+    <a href="@Url.Action("Index", "TodoList")" class="btn btn-outline-danger">
+        <span class="fas fa-cancel pe-2"></span>Cancel
+    </a>
+</form>
