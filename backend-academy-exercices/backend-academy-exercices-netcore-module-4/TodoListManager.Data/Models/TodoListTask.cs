@@ -4,8 +4,9 @@
 
 namespace TodoListManager.Data.Models
 {
-    public class TaskItem : EntityBase
+    public class TodoListTask : EntityBase
     {
+
 
         public string Description { get; set; }
         public Priority Priority { get; set; }
@@ -14,7 +15,7 @@ namespace TodoListManager.Data.Models
         public TodoList TodoList { get; set; }
 
 
-        public TaskItem(string description)
+        public TodoListTask(string description)
         {
             Description = description;
         }

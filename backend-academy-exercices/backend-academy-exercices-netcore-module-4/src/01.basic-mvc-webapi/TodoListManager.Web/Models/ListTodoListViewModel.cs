@@ -19,7 +19,7 @@ namespace TodoListManager.Web.Models
 
     public class TodoListInfo
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int TaskCount { get; set; }
@@ -30,7 +30,7 @@ namespace TodoListManager.Web.Models
             Id = todoList.Id;
             Name = todoList.Name;
             Description = todoList.Description;
-            TaskCount = todoList.Tasks.Count;
+            TaskCount = todoList._tasks.Count;
             ColorCssClasses = todoList.Color.GetCssClasses();
         }
     }

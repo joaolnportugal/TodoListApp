@@ -9,22 +9,23 @@ namespace TodoListManager.Data.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public Color Color { get; set; }
-        public ICollection<TaskItem> _tasks { get; set; }
+        public ICollection<TodoListTask> _tasks { get; set; }
 
         public TodoList(string name)
         {
             Name = name;
+            _tasks = new List<TodoListTask>();
         }
 
         public void AddTask(string description, int priority)
         {
-            _tasks.Add(new TaskItem(description)
+            _tasks.Add(new TodoListTask(description)
             {
                 Priority = (Priority)priority
             });
         }
 
-        public void RemoveTask(Guid taskId)
+        public void RemoveTask(int taskId)
         {
             var task = _tasks.FirstOrDefault(x => x.Id == taskId);
             if (task is not null)
@@ -33,7 +34,7 @@ namespace TodoListManager.Data.Models
             }
         }
 
-        public void ToggleTaskCompletion(Guid taskId)
+        public void ToggleTaskCompletion(int taskId)
         {
             var task = _tasks.FirstOrDefault(x => x.Id == taskId);
             if (task is not null)

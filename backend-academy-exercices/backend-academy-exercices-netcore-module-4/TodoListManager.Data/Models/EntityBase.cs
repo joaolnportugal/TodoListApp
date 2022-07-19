@@ -14,7 +14,7 @@ namespace TodoListManager.Data.Models
 {
     public abstract class EntityBase
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
     }
 
     public class EntityBaseConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>

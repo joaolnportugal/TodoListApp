@@ -23,32 +23,41 @@ namespace TodoListManager.Web.Models.Generic_Repo
          where TEntity : EntityBase
     {
         private readonly TodoListContext _dbContext;
-        protected DbSet<TEntity> Entities { get; init; }
+        protected DbSet<TEntity> dbSet { get; init; }
 
         public GenericRepository(TodoListContext dbContext)
         {
-            _dbContext = dbContext;
-            Entities = _dbContext.Set<TEntity>();
+            this._dbContext = dbContext;
+            this.dbSet = _dbContext.Set<TEntity>();
         }
 
         public IQueryable<TEntity> PrepareQuery() =>
-            Entities.AsQueryable();
+            dbSet.AsQueryable();
 
-        public TEntity Find(Guid id)
+        public TEntity Find(int id)
             => PrepareQuery().SingleOrDefault(x => x.Id == id);
 
         public void Add(TEntity entity) =>
-            Entities.Add(entity);
+            dbSet.Add(entity);
 
-        public void Delete(TEntity entity) =>
-            Entities.Remove(entity);
+        public void Delete(TEntity entity)
+        {
+            if (_dbContext.Entry(entity).State == EntityState.Detached)
+            {
+                dbSet.Attach(entity);
+            }
+             dbSet.Remove(entity);
+
+        }
+
+        public virtual void Delete(object id)
+        {
+            TEntity entity = dbSet.Find(id);
+            Delete(entity);
+        }
+
 
         public int Save()
             => _dbContext.SaveChanges();
-
-        public TEntity Find(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

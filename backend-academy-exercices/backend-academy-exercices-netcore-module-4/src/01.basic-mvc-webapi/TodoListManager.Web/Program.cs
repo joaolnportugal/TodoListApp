@@ -13,7 +13,7 @@ builder.Services.AddAppDependencies(builder.Configuration);
 
 var app = builder.Build();
 
-TodoListsProvider.Initialize();
+app.InitializeDb();
 
 // Configure the HTTP request Pipeline
 

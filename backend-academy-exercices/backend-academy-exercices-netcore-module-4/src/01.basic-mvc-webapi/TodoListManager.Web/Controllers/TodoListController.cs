@@ -18,9 +18,9 @@ namespace TodoListManager.Web.Controllers
 
 
 
-        public TodoListController()
+        public TodoListController(ITodoListService todoListService)
         {
-            _todoListService = new TodoListService(new TodoListContext());
+            _todoListService = todoListService;
         }
         public IActionResult Index()
         {
@@ -50,19 +50,19 @@ namespace TodoListManager.Web.Controllers
                 Description = model.Description,
                 Color = (Color)model.SelectedColor
             };
-            _todoListService.AddTodoList(todoList);
+            _todoListService.CreateTodoList(todoList);
 
             return RedirectToAction("Index");
         }
 
-        public IActionResult View(Guid? id)
+        public IActionResult View(int? id)
         {
             if (id is null)
             {
                 return RedirectToAction("Index");
             }
 
-            var todoList = _todoListService.GetTodoListById(id.Value);
+            var todoList = _todoListService.GetById(id.Value);
             if (todoList is null)
             {
                 return RedirectToAction("Index");
@@ -72,14 +72,14 @@ namespace TodoListManager.Web.Controllers
             return View(model);
         }
 
-        public IActionResult Edit(Guid? id)
+        public IActionResult Edit(int? id)
         {
             if (id is null)
             {
                 return RedirectToAction("Index");
             }
 
-            var todoList = _todoListService.GetTodoListById(id.Value);
+            var todoList = _todoListService.GetById(id.Value);
             if (todoList is null)
             {
                 return RedirectToAction("Index");
@@ -95,10 +95,14 @@ namespace TodoListManager.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                var editModel = new EditTodoListViewModel
+                {
+                    TodoList = model
+                };
+                return View(editModel);
             }
 
-            var todoList = _todoListService.GetTodoListById(model.Id);
+            var todoList = _todoListService.GetById(model.Id, true);
             if (todoList is null)
             {
                 return RedirectToAction("index");
@@ -108,12 +112,25 @@ namespace TodoListManager.Web.Controllers
             todoList.Description = model.Description;
             todoList.Color = (Color)model.SelectedColor;
 
+            _todoListService.UpdateTodoList(todoList);
+
             return RedirectToAction("Index");
         }
 
-        public IActionResult Delete(Guid id)
+        public IActionResult Delete(int? id)
         {
-            _todoListService.DeleteTodoList(id);
+            if (id is null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var todoList = _todoListService.GetById(id.Value, true);
+            if (todoList is null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            _todoListService.DeleteTodoList(todoList);
 
             return RedirectToAction("Index");
         }

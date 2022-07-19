@@ -26,13 +26,13 @@ namespace TodoListManager.Data
             s_todoLists.Add(todoList);
         }
 
-        public static TodoList? GetTodoListById(Guid id)
+        public static TodoList? GetTodoListById(int id)
             => s_todoLists.FirstOrDefault(x => x.Id == id);
 
         public static void AddTodoList(TodoList todoList)
             => s_todoLists.Add(todoList);
 
-        public static void DeleteTodoList(Guid todolistId)
+        public static void DeleteTodoList(int todolistId)
         {
             var todoList = GetTodoListById(todolistId);
             if (todoList is not null)
@@ -41,7 +41,7 @@ namespace TodoListManager.Data
             }
         }
 
-        public static void DeleteTask(Guid todolistId, Guid taskId)
+        public static void DeleteTask(int todolistId, int taskId)
         {
             var todoList = GetTodoListById(todolistId);
             if (todoList is not null)
@@ -50,7 +50,7 @@ namespace TodoListManager.Data
             }
         }
 
-        public static void ToggleTaskCompletion(Guid todolistId, Guid taskId)
+        public static void ToggleTaskCompletion(int todolistId, int taskId)
         {
             var todoList = GetTodoListById(todolistId);
             if (todoList is not null)
@@ -59,7 +59,7 @@ namespace TodoListManager.Data
             }
         }
 
-        public static void AddTask(Guid todolistId, string description, int priority)
+        public static void AddTask(int todolistId, string description, int priority)
         {
             var todoList = GetTodoListById(todolistId);
             if (todoList is not null)

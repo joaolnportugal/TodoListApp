@@ -4,6 +4,8 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TodoListManager.Businss.Services;
+using TodoListManager.Data;
 using TodoListManager.Web.Data;
 using TodoListManager.Web.Models.Dtos;
 
@@ -13,25 +15,33 @@ namespace TodoListManager.Web.Controllers.API
     [ApiController]
     public class TodoListController : ControllerBase
     {
+        private readonly ITodoListService _todoListService;
+
+        public TodoListController(ITodoListService todoListService)
+        {
+            _todoListService = todoListService;
+        }
+
+
         [Route("task/delete")]
         [HttpPost]
-        public void DeleteTask([FromQuery] Guid todolistid, [FromQuery] Guid taskid)
+        public void DeleteTask([FromQuery] int taskid)
         {
-            TodoListsProvider.DeleteTask(todolistid, taskid);
+            _todoListService.DeleteTask(taskid);
         }
 
         [Route("task/complete")]
         [HttpPost]
-        public void CompleteTask([FromQuery] Guid todolistid, [FromQuery] Guid taskid)
+        public void CompleteTask([FromQuery] int taskid)
         {
-            TodoListsProvider.ToggleTaskCompletion(todolistid, taskid);
+            _todoListService.ToggleCompleteTask(taskid);
         }
 
         [Route("task")]
         [HttpPost]
-        public void CreateTask([FromQuery] Guid todolistid, [FromBody] CreateTaskDto data)
+        public void CreateTask([FromQuery] int todolistid, [FromBody] CreateTaskDto data)
         {
-            TodoListsProvider.AddTask(todolistid, data.Task, data.Priority);
+            _todoListService.CreateTask(todolistid, data.Task, data.Priority);
         }
     }
 }

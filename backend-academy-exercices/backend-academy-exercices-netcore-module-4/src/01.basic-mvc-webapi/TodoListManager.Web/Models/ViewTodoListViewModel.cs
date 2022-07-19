@@ -9,7 +9,7 @@ namespace TodoListManager.Web.Models
 {
     public record ViewTodoListViewModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string ColorCssClasses { get; set; }
@@ -21,18 +21,18 @@ namespace TodoListManager.Web.Models
             Name = todoList.Name;
             Description = todoList.Description;
             ColorCssClasses = todoList.Color.GetCssClasses();
-            Tasks = todoList.Tasks.Select(t => new TaskInfo(t)).ToList();
+            Tasks = todoList._tasks.Select(t => new TaskInfo(t)).ToList();
         }
     }
 
     public class TaskInfo
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         public string Description { get; set; }
         public int Priority { get; set; }
         public bool IsComplete { get; set; }
 
-        public TaskInfo(TaskItem taskItem)
+        public TaskInfo(TodoListTask taskItem)
         {
             Id = taskItem.Id;
             Description = taskItem.Description;

@@ -11,7 +11,7 @@ namespace TodoListManager.Web.Models
 {
     public record EditTodoListViewModel
     {
-        public Guid Id { get; set; }
+        public int Id { get; set; }
         [Display(Name = "Name", Prompt = "Todo list name")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Please provide a name for the todo list")]
         public string? Name { get; set; }
@@ -20,6 +20,7 @@ namespace TodoListManager.Web.Models
 
         public int SelectedColor { get; set; }
         public List<TodoListColor> AvailableColors { get; set; }
+        public EditTodoListViewModel TodoList { get; internal set; }
 
         public EditTodoListViewModel()
         {

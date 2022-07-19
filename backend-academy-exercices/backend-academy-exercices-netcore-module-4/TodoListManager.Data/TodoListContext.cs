@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,23 @@ namespace TodoListManager.Data
     public class TodoListContext : DbContext
     {
         public DbSet<TodoList> TodoLists { get; set; }
-        public DbSet<TaskItem> TaskItems { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer(@"Server=.\SQLExpress;Database=SchoolDB;Trusted_Connection=True;");
-            }
-        }
+        public DbSet<TodoListTask> TodoListTasks { get; set; }
+
+        public TodoListContext(DbContextOptions<TodoListContext> dbContextOptions)
+            : base(dbContextOptions)
+        { }
+
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(), t => t.FullName.StartsWith("TodoListManager.Data", StringComparison.OrdinalIgnoreCase));
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
 
         }
     }
