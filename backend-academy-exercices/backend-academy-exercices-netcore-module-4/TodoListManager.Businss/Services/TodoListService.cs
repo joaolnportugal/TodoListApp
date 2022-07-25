@@ -39,37 +39,37 @@ public class TodoListService : ITodoListService
             _todoListRepository = todoListRepository;
         }
 
-        public TodoList? GetTodoListById(int id)
-        {
-            return TodoListsProvider.GetTodoListById(id);
-        }
+        //public TodoList? GetTodoListById(int id)
+        //{
+        //    return TodoListsProvider.GetTodoListById(id);
+        //}
 
 
-        public void AddTodoList(TodoList todoList)
-        {
-            TodoListsProvider.AddTodoList(todoList);
-        }
+        //public void AddTodoList(TodoList todoList)
+        //{
+        //    TodoListsProvider.AddTodoList(todoList);
+        //}
 
 
-        public void DeleteTodoList(int todolistId)
-        {
-            TodoListsProvider.DeleteTodoList(todolistId);
-        }
+        //public void DeleteTodoList(int todolistId)
+        //{
+        //    TodoListsProvider.DeleteTodoList(todolistId);
+        //}
 
-        public void DeleteTask(int todolistId, int taskId)
-        {
-            TodoListsProvider.DeleteTask(todolistId, taskId);
-        }
+        //public void DeleteTask(int todolistId, int taskId)
+        //{
+        //    TodoListsProvider.DeleteTask(todolistId, taskId);
+        //}
 
-        public void ToggleTaskCompletion(int todolistId, int taskId)
-        {
-            TodoListsProvider.ToggleTaskCompletion(todolistId, taskId);
-        }
+        //public void ToggleTaskCompletion(int todolistId, int taskId)
+        //{
+        //    TodoListsProvider.ToggleTaskCompletion(todolistId, taskId);
+        //}
 
-        public void AddTask(int todolistId, string description, int priority)
-        {
-            TodoListsProvider.AddTask(todolistId, description, priority);
-        }
+        //public void AddTask(int todolistId, string description, int priority)
+        //{
+        //    TodoListsProvider.AddTask(todolistId, description, priority);
+        //}
 
         public IEnumerable<TodoList> GetAll() =>
               _todoListRepository.PrepareQuery()
@@ -79,7 +79,7 @@ public class TodoListService : ITodoListService
 
         public void CreateTodoList(TodoList todoList)
         {
-            //_todoListContext.TodoLists.Add(todoList);
+            
             _todoListRepository.Add(todoList);
             _todoListRepository.Save();
         }
@@ -100,12 +100,13 @@ public class TodoListService : ITodoListService
 
         public void UpdateTodoList(TodoList todoList)
         {
-            //_todoListContext.TodoLists.Update(todoList);
+            _todoListRepository.Save();
         }
 
         public void DeleteTodoList(TodoList todoList)
         {
-            /*_todoListContext.TodoLists.Remove(todoList)*/;
+            _todoListRepository.Delete(todoList);
+            _todoListRepository.Save();
         }
 
         public void DeleteTask(int taskId)
@@ -131,7 +132,7 @@ public class TodoListService : ITodoListService
 
         public void CreateTask(int todoListId, string description, int priority)
         {
-            
+
 
             var todoList = _todoListRepository.PrepareQuery()
                 .Include(x => x._tasks)
@@ -149,9 +150,6 @@ public class TodoListService : ITodoListService
             }
         }
 
-        public object GetById(Guid value)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

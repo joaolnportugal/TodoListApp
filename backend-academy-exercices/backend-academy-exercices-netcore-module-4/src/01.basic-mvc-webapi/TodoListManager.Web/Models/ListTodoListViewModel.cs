@@ -9,12 +9,17 @@ namespace TodoListManager.Web.Models
 {
     public record ListTodoListViewModel
     {
+        private IEnumerable<TodoList> _todoLists;
+        private TodoList _todoLists1;
+
         public List<TodoListInfo> TodoLists { get; set; } = new List<TodoListInfo>();
 
         public ListTodoListViewModel(List<TodoList> todoLists)
         {
             TodoLists = todoLists.Select(t => new TodoListInfo(t)).ToList();
         }
+
+    
     }
 
     public class TodoListInfo

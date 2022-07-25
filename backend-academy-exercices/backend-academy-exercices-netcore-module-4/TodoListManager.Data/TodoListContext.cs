@@ -22,7 +22,6 @@ namespace TodoListManager.Data
             : base(dbContextOptions)
         { }
 
-       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

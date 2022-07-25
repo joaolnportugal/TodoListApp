@@ -15,8 +15,7 @@ namespace TodoListManager.Web.Controllers
     {
 
         private ITodoListService _todoListService;
-
-
+        private int id;
 
         public TodoListController(ITodoListService todoListService)
         {
@@ -25,8 +24,8 @@ namespace TodoListManager.Web.Controllers
         public IActionResult Index()
         {
 
-            var todoLists = TodoListsProvider.TodoLists.ToList();
-            var model = new ListTodoListViewModel(todoLists);
+            var todoLists = _todoListService.GetAll();
+            var model = new ListTodoListViewModel(todoLists.ToList());
             return View(model);
         }
 
@@ -51,6 +50,7 @@ namespace TodoListManager.Web.Controllers
                 Color = (Color)model.SelectedColor
             };
             _todoListService.CreateTodoList(todoList);
+
 
             return RedirectToAction("Index");
         }
