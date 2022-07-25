@@ -4,8 +4,7 @@
 
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using TodoListManager.Data.Models;
-
+using TodoListManager.Data.Models.Shared;
 
 namespace TodoListManager.Web.Models
 {

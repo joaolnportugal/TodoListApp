@@ -35,7 +35,7 @@ namespace TodoListManager.Web.Models
             Id = todoList.Id;
             Name = todoList.Name;
             Description = todoList.Description;
-            TaskCount = todoList._tasks.Count;
+            TaskCount = todoList.Tasks.Count;
             ColorCssClasses = todoList.Color.GetCssClasses();
         }
     }

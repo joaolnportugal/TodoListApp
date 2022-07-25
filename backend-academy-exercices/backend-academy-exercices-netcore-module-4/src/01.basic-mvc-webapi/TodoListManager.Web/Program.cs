@@ -2,13 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.Extensions.DependencyInjection;
 using TodoListManager.Data;
 using TodoListManager.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
 //register services
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddAppDependencies(builder.Configuration);
 
 var app = builder.Build();

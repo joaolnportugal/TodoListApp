@@ -8,6 +8,7 @@ using TodoListManager.Businss.Services;
 using TodoListManager.Web.Models;
 using TodoListManager.Web.Data;
 using TodoListManager.Data;
+using TodoListManager.Data.Models.Shared;
 
 namespace TodoListManager.Web.Controllers
 {
@@ -44,8 +45,9 @@ namespace TodoListManager.Web.Controllers
                 return View(model);
             }
 
-            var todoList = new TodoList(model.Name)
+            var todoList = new TodoList()
             {
+                Name = model.Name,
                 Description = model.Description,
                 Color = (Color)model.SelectedColor
             };

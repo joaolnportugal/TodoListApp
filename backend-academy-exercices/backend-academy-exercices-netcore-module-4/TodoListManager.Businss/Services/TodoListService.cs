@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TodoListManager.Data;
 using TodoListManager.Data.Models;
+using TodoListManager.Data.Models.Shared;
 using TodoListManager.Web.Models.Generic_Repo;
 
 namespace TodoListManager.Businss.Services
@@ -74,7 +75,7 @@ public class TodoListService : ITodoListService
         public IEnumerable<TodoList> GetAll() =>
               _todoListRepository.PrepareQuery()
                   .AsNoTracking()
-                  .Include(x => x._tasks)
+                  .Include(x => x.Tasks)
                   .ToList();
 
         public void CreateTodoList(TodoList todoList)
@@ -94,7 +95,7 @@ public class TodoListService : ITodoListService
             }
 
             return query
-                .Include(x => x._tasks)
+                .Include(x => x.Tasks)
                 .SingleOrDefault(x => x.Id == id);
         }
 
@@ -135,17 +136,17 @@ public class TodoListService : ITodoListService
 
 
             var todoList = _todoListRepository.PrepareQuery()
-                .Include(x => x._tasks)
+                .Include(x => x.Tasks)
                 .SingleOrDefault(x => x.Id == todoListId);
 
             if (todoList is not null)
             {
-                var task = new TodoListTask(description)
+                var task = new TodoListTask()
                 {
                     Description = description,
                     Priority = (Priority)priority
                 };
-                todoList._tasks.Add(task);
+                todoList.Tasks.Add(task);
                 _todoListRepository.Save();
             }
         }

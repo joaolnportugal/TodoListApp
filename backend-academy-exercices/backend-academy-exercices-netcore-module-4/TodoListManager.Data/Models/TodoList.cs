@@ -2,6 +2,10 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TodoListManager.Data.Models.Shared;
+
 namespace TodoListManager.Data.Models
 {
     public class TodoList : EntityBase
@@ -9,38 +13,26 @@ namespace TodoListManager.Data.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public Color Color { get; set; }
-        public ICollection<TodoListTask> _tasks { get; set; }
-
-        public TodoList(string name)
+        public ICollection<TodoListTask> Tasks { get; set; }
+    }
+    public class TodoListConfiguration : EntityBaseConfiguration<TodoList>
+    {
+        public override void Configure(EntityTypeBuilder<TodoList> builder)
         {
-            Name = name;
-            _tasks = new List<TodoListTask>();
-        }
+            base.Configure(builder);
 
-        public void AddTask(string description, int priority)
-        {
-            _tasks.Add(new TodoListTask(description)
-            {
-                Priority = (Priority)priority
-            });
-        }
+            builder.ToTable("TodoList");
 
-        public void RemoveTask(int taskId)
-        {
-            var task = _tasks.FirstOrDefault(x => x.Id == taskId);
-            if (task is not null)
-            {
-                _tasks.Remove(task);
-            }
-        }
+            builder.Property(x => x.Name)
+                .HasMaxLength(100)
+                .IsRequired();
 
-        public void ToggleTaskCompletion(int taskId)
-        {
-            var task = _tasks.FirstOrDefault(x => x.Id == taskId);
-            if (task is not null)
-            {
-                task.IsComplete = !task.IsComplete;
-            }
+            builder.Property(x => x.Description)
+                .HasMaxLength(250);
+
+            builder.Property(x => x.Color)
+                .HasDefaultValue(Color.DarkBlue)
+                .IsRequired();
         }
     }
 }

@@ -14,18 +14,18 @@ namespace TodoListManager.Data
 {
     internal class UnitOfWork : IUnitOfWork
     {
-        private TodoListContext _context;
+        private TodoListManagerDbContext _context;
         public IGenericRepository<TodoList> todoList;
         public IGenericRepository<TodoListTask> taskItem;
 
 
-        public UnitOfWork (TodoListContext dbContext) 
+        public UnitOfWork (TodoListManagerDbContext dbContext) 
         {
             _context = dbContext;
         }
 
 
-        public IGenericRepository<TodoList> BookRepository
+        public IGenericRepository<TodoList> TodoListRepo
         {
             get
             {
@@ -38,7 +38,7 @@ namespace TodoListManager.Data
             }
         }
 
-        public IGenericRepository<TodoListTask> TaskItem
+        public IGenericRepository<TodoListTask> Taskitemrepo
         {
             get
             {
@@ -52,9 +52,9 @@ namespace TodoListManager.Data
 
         }
 
-        public IGenericRepository<TodoList> TodoListRepo => throw new NotImplementedException();
+        //public IGenericRepository<TodoList> TodoListRepo => throw new NotImplementedException();
 
-        public IGenericRepository<TodoListTask> Taskitemrepo => throw new NotImplementedException();
+        //public IGenericRepository<TodoListTask> Taskitemrepo => throw new NotImplementedException();
 
         public void Save()
         {

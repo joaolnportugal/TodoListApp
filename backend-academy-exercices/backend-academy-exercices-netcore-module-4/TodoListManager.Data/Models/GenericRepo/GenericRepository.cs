@@ -22,10 +22,10 @@ namespace TodoListManager.Web.Models.Generic_Repo
     public class GenericRepository<TEntity> : IGenericRepository<TEntity>
          where TEntity : EntityBase
     {
-        private readonly TodoListContext _dbContext;
+        private readonly TodoListManagerDbContext _dbContext;
         protected DbSet<TEntity> dbSet { get; init; }
 
-        public GenericRepository(TodoListContext dbContext)
+        public GenericRepository(TodoListManagerDbContext dbContext)
         {
             this._dbContext = dbContext;
             this.dbSet = _dbContext.Set<TEntity>();

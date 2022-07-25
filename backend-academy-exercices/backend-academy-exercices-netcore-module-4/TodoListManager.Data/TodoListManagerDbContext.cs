@@ -13,12 +13,12 @@ using TodoListManager.Data.Models;
 
 namespace TodoListManager.Data
 {
-    public class TodoListContext : DbContext
+    public class TodoListManagerDbContext : DbContext
     {
         public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoListTask> TodoListTasks { get; set; }
 
-        public TodoListContext(DbContextOptions<TodoListContext> dbContextOptions)
+        public TodoListManagerDbContext(DbContextOptions<TodoListManagerDbContext> dbContextOptions)
             : base(dbContextOptions)
         { }
 
@@ -34,6 +34,8 @@ namespace TodoListManager.Data
             base.OnConfiguring(optionsBuilder);
 
         }
+
+
     }
 }
 

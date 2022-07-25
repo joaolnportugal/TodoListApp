@@ -12,7 +12,7 @@ namespace Microsoft.AspNetCore.Builder
         public static IApplicationBuilder InitializeDb(this IApplicationBuilder applicationBuilder)
         {
             using var scope = applicationBuilder.ApplicationServices.CreateScope();
-            var dbContext = scope.ServiceProvider.GetRequiredService<TodoListContext>();
+            var dbContext = scope.ServiceProvider.GetRequiredService<TodoListManagerDbContext>();
 
             dbContext.Database.Migrate();
 

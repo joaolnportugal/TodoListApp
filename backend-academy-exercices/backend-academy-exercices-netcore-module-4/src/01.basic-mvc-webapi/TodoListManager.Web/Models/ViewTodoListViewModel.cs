@@ -21,7 +21,7 @@ namespace TodoListManager.Web.Models
             Name = todoList.Name;
             Description = todoList.Description;
             ColorCssClasses = todoList.Color.GetCssClasses();
-            Tasks = todoList._tasks.Select(t => new TaskInfo(t)).ToList();
+            Tasks = todoList.Tasks.Select(t => new TaskInfo(t)).ToList();
         }
     }
 

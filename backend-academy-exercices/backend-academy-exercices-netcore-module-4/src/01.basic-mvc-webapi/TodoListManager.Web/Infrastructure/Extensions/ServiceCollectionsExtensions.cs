@@ -14,10 +14,10 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddAppDependencies(this IServiceCollection services, IConfiguration configuration)
         {
 
-            services.AddDbContext<TodoListContext>(opts =>
+            services.AddDbContext<TodoListManagerDbContext>(opts =>
             {
                 var connectionString = configuration.GetConnectionString("Default");
-                var migrationsAssembly = typeof(TodoListContext).Assembly.GetName().Name;
+                var migrationsAssembly = typeof(TodoListManagerDbContext).Assembly.GetName().Name;
 
                 opts.UseSqlServer(connectionString, sqlOptions =>
                 {
